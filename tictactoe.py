@@ -8,19 +8,22 @@ Created on Tue Aug 11 21:58:38 2020
 
 
 def printTable(table):
+    print()
+    print("   1 2 3")
     for i in range(3):
+        print(str(i+1) + " ", end = " "),
         for k in range(3):
             print(table[i][k], end = " "),
         print("")
-
+    print()
 
 
 
 def playX(table,move1,move2):
-    table[move1][move2] = "X"
+    table[move1][move2] = "X"   
     
 def playO(table,move1,move2):
-    table[move1][move2] = "O"
+    table[move1][move2] = "O" 
     
     
 def checkRows(table):
@@ -33,9 +36,9 @@ def checkRows(table):
 
 
 def checkColumns(table):
-   column1 = table[0][0] + table[0][1] + table[0][2]
-   column2 = table[1][0] + table[1][1] + table[1][2]
-   column3 = table[2][0] + table[2][1] + table[2][2]
+   column1 = table[0][0] + table[1][0] + table[2][0]
+   column2 = table[0][1] + table[1][1] + table[1][1]
+   column3 = table[0][2] + table[1][2] + table[2][2]
    constX = "XXX"
    constO = "OOO"
    if column1 == constX or column2 == constX or column3 == constX:
@@ -68,13 +71,62 @@ def checkTable(table):
     elif result3 == "X" or result3 == "O":
         return "Winner is " + result3
     else:
-        return "Draw"
+        return ""
 
 table = [["-", "-", "-"],["-", "-", "-"],["-", "-", "-"]] 
 
-playO(table,0,0)
-playO(table,1,1)
-playO(table,2,2)
+print("Welcome to TicTacToe. Choose the game mode")
+print("1- Player vs Computer")
+print("2- Player vs Player")
 
-print(checkTable(table))
+gameMode = input()
 printTable(table)
+if gameMode == "1":
+    print("")
+elif gameMode == "2":
+    for i in range(0,9):
+        if i%2 == 0:
+            print("1. Player's Move:", end = " "),
+            move = input()
+            move1 = int(move[0])-1
+            move2 = int(move[2])-1
+            playX(table,move1,move2) 
+              
+            
+        if i%2 == 1 :
+            print("2. Player's Move:", end = " "),
+            move = input()
+            move1 = int(move[0])-1
+            move2 = int(move[2])-1
+            playO(table,move1,move2)
+    
+                
+        printTable(table)
+        if checkTable(table) != "":
+            print(checkTable(table))
+            break
+
+
+
+print("Game Over")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
