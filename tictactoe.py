@@ -18,13 +18,25 @@ def printTable(table):
     print()
 
 
+def isMoveValid(table,move1,move2):
+    if table[move1][move2] == "-":
+        return True
+    else:
+        return False
 
 def playX(table,move1,move2):
-    table[move1][move2] = "X"   
+    if isMoveValid(table,move1,move2) == True:
+        table[move1][move2] = "X"
+        return True
+    else:
+        return False
     
 def playO(table,move1,move2):
-    table[move1][move2] = "O" 
-    
+    if isMoveValid(table,move1,move2) == True:
+        table[move1][move2] = "O" 
+        return True
+    else:
+        return False
     
 def checkRows(table):
     constX = "['X', 'X', 'X']"
@@ -84,28 +96,32 @@ printTable(table)
 if gameMode == "1":
     print("")
 elif gameMode == "2":
-    for i in range(0,9):
+    i = 0
+    while i<9:
+        print(i)
         if i%2 == 0:
             print("1. Player's Move:", end = " "),
             move = input()
             move1 = int(move[0])-1
             move2 = int(move[2])-1
-            playX(table,move1,move2) 
-              
+            if playX(table,move1,move2) == False:
+                print("Move is invalid.")
+                i = i-1
             
-        if i%2 == 1 :
+        elif i%2 == 1 :
             print("2. Player's Move:", end = " "),
             move = input()
             move1 = int(move[0])-1
             move2 = int(move[2])-1
-            playO(table,move1,move2)
+            if playO(table,move1,move2) == False:
+                print("Move is invalid.")
+                i = i-1
     
-                
+        i = i+1        
         printTable(table)
         if checkTable(table) != "":
             print(checkTable(table))
             break
-
 
 
 print("Game Over")
