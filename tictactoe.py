@@ -37,7 +37,75 @@ def playO(table,move1,move2):
         return True
     else:
         return False
+
+def playBestMove(table):
+    bestScore = -99
+    move1 = -1
+    move2 = -1
     
+    for i in range (0,3):
+        for j in range (0,3):
+            # is the spot available?
+            if str(table[i][j]) == "-":
+                table[i][j] = "X"
+                score = minimax(table,0,False)
+                print(str(i+1) + " " + str(j+1)  + " " + str(score));
+                table[i][j] = "-"
+                if score > bestScore:
+                    bestScore = score
+                    move1 = i
+                    move2 = j
+    
+    playX(table,move1,move2)
+                    
+
+def isTableFull(table):
+    for i in range (3):
+        for j in range(3):
+            if table[i][j] == "-":
+                return False
+    return True
+
+
+
+
+def minimax(table, depth, isMaximizing):
+    if isTableFull(table) == True:
+        if "X" in str(checkTable(table)):
+            return 1
+        elif "O" in str(checkTable(table)):
+            return -1
+        else:
+            return 0
+    
+    if isMaximizing == True:
+        bestScore = -99
+        for i in range (0,3):
+            for j in range (0,3):
+                #is the spot available ?
+                if str(table[i][j]) == "-":
+                    table[i][j] = "X"
+                    score = minimax(table,depth+1,False)
+                   
+                    table[i][j] = "-"
+                    bestScore = max(score, bestScore)
+        return bestScore
+    
+    else:
+        bestScore = 99
+        for i in range (0,3):
+            for j in range (0,3):
+               #is the spot available ?
+                if str(table[i][j]) == "-":
+                    table[i][j] = "O"
+                    printTable(table)
+                    score = minimax(table,depth+1,True)
+                    table[i][j] = "-"
+                    bestScore = min(score,bestScore)
+        return bestScore
+                
+    
+     
 def checkRows(table):
     constX = "['X', 'X', 'X']"
     constO = "['O', 'O', 'O']"
@@ -49,7 +117,7 @@ def checkRows(table):
 
 def checkColumns(table):
    column1 = table[0][0] + table[1][0] + table[2][0]
-   column2 = table[0][1] + table[1][1] + table[1][1]
+   column2 = table[0][1] + table[1][1] + table[2][1]
    column3 = table[0][2] + table[1][2] + table[2][2]
    constX = "XXX"
    constO = "OOO"
@@ -92,13 +160,31 @@ print("1- Player vs Computer")
 print("2- Player vs Player")
 
 gameMode = input()
-printTable(table)
 if gameMode == "1":
-    print("")
-elif gameMode == "2":
-    i = 0
+    i=0
     while i<9:
-        print(i)
+        if i%2 == 0:
+            print("Computer's Move")
+            playBestMove(table)
+        elif i%2 == 1:
+            print("Your Move : ", end = " "),
+            move = input()
+            move1 = int(move[0])-1
+            move2 = int(move[2])-1
+            playO(table,move1,move2)
+        
+        i = i+1        
+        printTable(table)
+        print("*******************************")
+        if checkTable(table) != "":
+            print(checkTable(table))
+            break
+            
+elif gameMode == "2":
+    printTable(table)
+    i = 0
+    print("*******************************")
+    while i<9:
         if i%2 == 0:
             print("1. Player's Move:", end = " "),
             move = input()
@@ -116,9 +202,9 @@ elif gameMode == "2":
             if playO(table,move1,move2) == False:
                 print("Move is invalid.")
                 i = i-1
-    
         i = i+1        
         printTable(table)
+        print("*******************************")
         if checkTable(table) != "":
             print(checkTable(table))
             break
